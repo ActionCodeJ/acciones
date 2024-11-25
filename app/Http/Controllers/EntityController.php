@@ -10,7 +10,7 @@ class EntityController extends Controller
 {
     public function index()
     {
-        $entities = Entity::with('entidad_padre')->get();
+        $entities = Entity::with('entidad_padre')->orderBy('nombre', 'asc')->get();
         return view('entities.index', compact('entities'));
     }
 
@@ -21,7 +21,9 @@ class EntityController extends Controller
 
     public function edit(Entity $entity)
     {  
-        $entidades_padre = Entity::all();
+        $entidades_padre = Entity::orderBy('nombre', 'asc')->get();
+
+       // $entidades_padre = Entity::all();
 
         // Retorna la vista de edición, pasando la entidad y las entidades padre
         return view('entities.edit', compact('entity', 'entidades_padre'));
@@ -50,7 +52,7 @@ class EntityController extends Controller
     public function create()
     {
            // Cargar todos los departamentos desde la base de datos
-        $entidades_padre = Entity::all();
+        $entidades_padre = Entity::orderBy('nombre', 'asc')->get();
         return view('entities.create', compact('entidades_padre'));
     }
 

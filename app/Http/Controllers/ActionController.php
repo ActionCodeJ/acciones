@@ -112,15 +112,24 @@ class ActionController extends Controller
     public function create()
     {
            // Cargar todos los departamentos desde la base de datos
-        $localidades = Localidad::all();
-        $entidades = Entity::all();
-        $personas = Team::all();
+       // $localidades = Localidad::all();
+        $localidades = Localidad::orderBy('nombre', 'asc')->get();
+
+        //$entidades = Entity::all();
+        $entidades = Entity::orderBy('nombre', 'asc')->get();
+
+        //$personas = Team::all();
+        $personas = Team::orderBy('nombre', 'asc')->get();
+
 
         $estados = ActionState::all();
          $tipos = ActionType::all();
 
-        $programs = Program::all();
-        $projects = Project::all();
+       // $programs = Program::all();
+        $programs = Program::orderBy('nombre', 'asc')->get();
+       // $projects = Project::all();
+        $projects = Project::orderBy('nombre', 'asc')->get();
+
         return view('actions.create', compact('estados','tipos','programs','projects','personas','localidades','entidades'));
     }
 

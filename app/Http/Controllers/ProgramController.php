@@ -10,7 +10,7 @@ class ProgramController extends Controller
 {
     public function index()
     {
-        $programs = Program::with('entity')->get();
+        $programs = Program::with('entity')->orderBy('nombre', 'asc')->get();
         return view('programs.index', compact('programs'));
     
     }
