@@ -11,7 +11,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::with('entity')->get();
+        $projects = Project::with('entity')->orderBy('nombre', 'asc')->get();
         return view('projects.index', compact('projects'));
     
     }

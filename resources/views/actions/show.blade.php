@@ -195,8 +195,9 @@
                 <div class="alert alert-success">
                     <ul>
                         @foreach ($imagenes as $imagen)
-                            <img src="{{ $imagen->image_path }}" alt="{{ $imagen->name }}" width="400" height="400">
-                        @endforeach
+                        <a href="{{ $imagen->image_path }}" alt="{{ $imagen->name }}"  target="_blank"><img src="{{ $imagen->image_path }}" alt="{{ $imagen->name }}" width="400" height="400"></a>
+                           
+                            @endforeach
                     </ul>
                 </div>
             @endif
@@ -295,3 +296,47 @@
 
 
 @endsection
+
+
+<script>
+    $(document).ready(function() {
+
+
+        setTimeout(function(){
+        $("div.alert-success").remove();
+        }, 8000 ); //remueve los mensajes de alerta  8 secs
+
+
+        $(document).on('click', '.btn-delete', function() {
+            $this = $(this);
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Seguro?',
+                text: "Realmente quiere eliminar este Documento?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si, borrar!',
+                cancelButtonText: 'No',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    $.post($this.data('url'), {
+                        _method: 'DELETE',
+                        _token: '{{ csrf_token() }}'
+                    }, function(res) {
+                        $this.closest('li').fadeOut(500, function() {
+                            $(this).remove();
+                        })
+                    })
+                }
+            })
+        })
+    })
+</script>

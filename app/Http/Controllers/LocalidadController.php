@@ -10,7 +10,7 @@ class LocalidadController extends Controller
 {
     public function index()
     {
-        $localidades = Localidad::with('departamento')->get();
+        $localidades = Localidad::with('departamento')->orderBy('nombre', 'asc')->get();
         return view('localidades.index', compact('localidades'));
     
     }

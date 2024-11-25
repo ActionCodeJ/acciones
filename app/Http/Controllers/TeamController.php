@@ -11,7 +11,7 @@ class TeamController extends Controller
 {
     public function index()
     {
-        $teams = Team::with('entity')->get();
+        $teams = Team::with('entity')->orderBy('nombre', 'asc')->get();
         return view('teams.index', compact('teams'));
     
     }
@@ -19,7 +19,9 @@ class TeamController extends Controller
     public function create()
     {
            // Cargar todos los departamentos desde la base de datos
-        $entities = Entity::all();
+      //  $entities = Entity::all();
+        $entities = Entity::orderBy('nombre', 'asc')->get();
+
         return view('teams.create', compact('entities'));
     }
 
@@ -56,8 +58,8 @@ class TeamController extends Controller
     // Mostrar el formulario para editar una localidad
     public function edit(Team $team)
     {  
-        $entities = Entity::all();
-
+       // $entities = Entity::all();
+        $entities = Entity::orderBy('nombre', 'asc')->get();
         // Retorna la vista de edición, pasando la localidad y los departamentos
         return view('teams.edit', compact('team', 'entities'));
     
