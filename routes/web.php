@@ -238,6 +238,7 @@ Route::get('/document-upload', 'DocumentUpload@createForm');
 Route::post('/document-upload', [DocumentUpload::class, 'DocumentUpload'])->name('documentUpload');
 
 Route::delete('document-upload/{document}', [DocumentUpload::class, 'destroy'])->name('documentUpload.destroy');
+Route::delete('image-upload/{image}', [FileUpload::class, 'destroy'])->name('image.destroy');
 
 
 

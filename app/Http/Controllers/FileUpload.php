@@ -4,12 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Image;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class FileUpload extends Controller
 {
     //
     
-    
+    public function destroy(Image $image)
+    {
+        if (!$image) {
+            return redirect()->back()->with('error', 'Sorry, A sucedido un inconveniente al eliminar el documento.');
+        }
+        
+        $action=$image->action;
+        Storage::delete($image->image_path);
+        
+
+        $image->delete();
+      //  Session::flash('success', ' Documento eliminado!!!'); 
+
+
+      return back()
+      ->with('success','!!! Documento eliminado !!!!!!!!.')
+      ;
+
+        return response()->json([
+            'success' => '!!! Documento eliminado!!!!!!!!.',
+            "message" => "Documento eliminado!"
+
+        ])  ;
+//print_r($action);
+        //return redirect()->route('actions.documentUpload',$action )->with('success', 'Documento Eliminado correctamente.');
+
+    }
      public function createForm(){
     return view('file-upload');
   }
