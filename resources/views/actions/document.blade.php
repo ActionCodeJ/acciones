@@ -6,8 +6,10 @@
 @section('content')
     <a href="{{ route('actions.index') }}" class="btn btn-success"><i class="fas fa-eye"> Volver al Listado de
             Actividades</i></a>
+
+            <a href="{{ route('actions.show', $action) }}" class="btn btn-warning"><i class="fas fa-camera"> Imagenes</i></a>
     @if ($action->mapa)
-        <a href="{{ route('outlets.edit', $action->mapa) }}" class="btn btn-info"><i class="fa fa-map-marker"></i> Modificar
+        <a href="{{ route('outlets.edit', $action->mapa) }}" class="btn btn-primary"><i class="fa fa-map-marker"></i> Modificar
             en mapa<i class="fa fa-map-marker"></i></a>
     @else
         <a href="{{ route('outlets.create', ['action_id' => $action->id]) }}" class="btn btn-info"><i

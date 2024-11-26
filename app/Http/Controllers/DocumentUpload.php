@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Action;
 use App\Models\Document;
 use App\Models\Image;
 use Illuminate\Http\Request;
@@ -68,12 +69,21 @@ class DocumentUpload extends Controller
             
             
         }
-               
-       ////Session::flash('message', 'Las Imagenes han sido registradas con exito!');
+        $action = Action::find($req->action_id);
+  
+     //  Session::flash('message', 'Los Documentos  han sido registradas con exito!');
+     //  return view('actions.document', $action, compact('action'));
 
+       return redirect()->route('actions.documentUpload', $action)->with('success', 'Los Documentos  han sido registradas con exito.');
+
+       
+
+
+       /*
             return back()
             ->with('success','!!! Los Documentos han sido registrados con exito :) !!!!!!!!.')
             ->with('file', $fileName);
+            */
         
    }
 }
