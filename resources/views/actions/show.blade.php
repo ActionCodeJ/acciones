@@ -192,11 +192,21 @@
             </form>
 
             @if (count($imagenes) > 0)
-                <div class="alert alert-success">
+                <div class="alert alert-danger">
                     <ul>
                         @foreach ($imagenes as $imagen)
-                        <a href="{{ $imagen->image_path }}" alt="{{ $imagen->name }}"  target="_blank"><img src="{{ $imagen->image_path }}" alt="{{ $imagen->name }}" width="400" height="400"></a>
-                           
+                        <li> <a href="{{ $imagen->image_path }}" alt="{{ $imagen->name }}"  target="_blank"><img src="{{ $imagen->image_path }}" alt="{{ $imagen->name }}" width="400" height="400">
+
+
+                        </a>
+                            - <i class="fa fa-trash" aria-hidden="true"></i><button class="btn btn-danger btn-delete"
+                            data-url="{{ route('image.destroy', $imagen) }}"><i
+                                class="fas fa-trash"></i>Eliminar imagen</button>
+             
+                    </li> 
+                        
+                        
+
                             @endforeach
                     </ul>
                 </div>
@@ -293,11 +303,6 @@
     </script>
 
 
-
-
-@endsection
-
-
 <script>
     $(document).ready(function() {
 
@@ -319,7 +324,7 @@
 
             swalWithBootstrapButtons.fire({
                 title: 'Seguro?',
-                text: "Realmente quiere eliminar este Documento?",
+                text: "Realmente quiere eliminar esta Imagen?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si, borrar!',
@@ -327,10 +332,12 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.value) {
+                    alert($this.data('url'));
                     $.post($this.data('url'), {
                         _method: 'DELETE',
                         _token: '{{ csrf_token() }}'
                     }, function(res) {
+                        alert(res);
                         $this.closest('li').fadeOut(500, function() {
                             $(this).remove();
                         })
@@ -340,3 +347,7 @@
         })
     })
 </script>
+
+
+
+@endsection

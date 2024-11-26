@@ -79,6 +79,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::resource('creditos', CreditController::class);
 
     Route::delete('usuarios/{user}', [UsuarioController::class, 'destroy'])->name('usuarios.destroy');
+    Route::delete('image-upload/{image}', [FileUpload::class, 'destroy']);
 
     Route::resource('usuarios', UsuarioController::class);
 
