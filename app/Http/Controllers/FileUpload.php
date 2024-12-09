@@ -10,6 +10,27 @@ use Illuminate\Support\Facades\Storage;
 class FileUpload extends Controller
 {
     //
+    public function index()
+
+    {
+
+    	$images = Image::get();
+
+    	return view('actions.image-gallery',compact('images'));
+
+    }
+
+    public function eliminar($id)
+
+    {
+
+    	Image::find($id)->delete();
+
+    	return back()
+
+    		->with('success','Imagen eliminada correctamente !!.');	
+
+    }
     
     public function destroy(Image $image)
     {
@@ -41,7 +62,39 @@ class FileUpload extends Controller
      public function createForm(){
     return view('file-upload');
   }
+  public function upload(Request $request)
 
+  {
+
+      $this->validate($request, [
+
+          'title' => 'required',
+
+          'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
+      ]);
+
+
+
+      $input['image'] = time().'.'.$request->image->getClientOriginalExtension();
+
+      //$request->image->move(public_path('images'), $input['image']);
+      $fileName = $request->image->getClientOriginalName();
+      $request->image->move('uploads', $fileName, 'public');
+
+
+      $input['name'] = $request->title;
+      $input['image_path'] = '/uploads/' . $fileName;
+      
+      Image::create($input);
+
+
+
+      return back()
+
+          ->with('success','Image Uploaded successfully.');
+
+  }
   public function fileUpload(Request $req){
         $req->validate([
         'imageFile' => 'required',

@@ -302,7 +302,9 @@
         });
     </script>
 
-
+<!-- jQuery -->
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    
 <script>
     $(document).ready(function() {
 
@@ -332,12 +334,12 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.value) {
-                    alert($this.data('url'));
+                 //   alert($this.data('url'));
                     $.post($this.data('url'), {
                         _method: 'DELETE',
                         _token: '{{ csrf_token() }}'
                     }, function(res) {
-                        alert(res);
+                      //  alert(res);
                         $this.closest('li').fadeOut(500, function() {
                             $(this).remove();
                         })
