@@ -5,11 +5,84 @@ namespace App\Http\Controllers;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use ZipArchive;
+use File;
+use Illuminate\Support\Facades\Session;
 
 class FileUpload extends Controller
 {
     //
+   
+/**
+ * Function to covert all DB files to Zip
+ */
+public function converToZip($imgarr)
+{
+            $zip = new ZipArchive;
+            $storage_path =  public_path();
+            $timeName = 'FotosSeleccionadas'.time();
+            $zipFileName = $storage_path . '/' . $timeName . '.zip';
+            $zipPath = asset($zipFileName);
+            if ($zip->open(($zipFileName), ZipArchive::CREATE) === true) {
+                foreach ($imgarr as $relativName) {
+                    $zip->addFile($relativName,"/".$timeName."/".basename($relativName));
+                }
+                $zip->close();
+
+                if ($zip->open($zipFileName) === true) {
+                    return response()->download($zipFileName);
+                    unlink($zipFileName);//Destruye el archivo temporal
+
+                    //return $zipPath;
+                } else {
+                    return false;
+                }
+            }
+}
+
+
+    public function descargar(Request $request)
+
+    {
+
+        
+        if(isset($request->numero) && is_array($request->numero))
+        {
+            return redirect()->back()->with('error', 'Para la descarga debe seleccionar al menos una imagen.');
+        }
+
+
+        $imagenes=$request->numero;
+
+      
+        if (empty($imagenes) ) {
+           // dd( $imagenes);
+           Session::flash('success', ' Documento eliminado!!!'); 
+            return redirect()->back()->with('error', 'Para la descarga debe seleccionar al menos una imagen.');
+        }
+
+       
+        $i=0;
+    	foreach ($imagenes as $valor){
+           
+           // echo($valor);
+            $imagen= Image::find($valor);
+           // echo( public_path(). '-ruta'. $imagen->image_path);
+            $imgarr[] =  public_path(). '/' . $imagen->image_path;
+            $i++;
+            
+
+        }
+        if (empty($i)) {
+            session()->flash('error', 'Selecione al menos un checkbox');
+
+            return redirect()->back()->with('error', 'Para la descarga debe seleccionar al menos una imagen.');
+        }
+        $ziplink = $this->converToZip($imgarr);
+        return $ziplink;
+
+    }
+
     public function index()
 
     {

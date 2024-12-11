@@ -112,6 +112,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 
     Route::post('image-gallery', [FileUpload::class, 'upload'])->name('file.upload');
+    Route::post('descargar-galeria', [FileUpload::class, 'descargar'])->name('file.descargar');
 
     //Route::delete('image-gallery/{id}', 'ImageGalleryController@destroy');
 

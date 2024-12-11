@@ -75,9 +75,6 @@
 
 
             @if($images->count())
-            <form action="{{ route('file.descargar') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-
 
                 @foreach($images as $image)
 
@@ -95,18 +92,19 @@
 
                     </a>
 
+                    <form action="{{ url('admin/galeria',$image->id) }}" method="POST">
 
-                     <input  class="close-icon btn btn-sucess" type="checkbox" name="numero[]" value="{{ $image->id }}" >
+                    <input type="hidden" name="_method" value="delete">
 
-                    
+                    {!! csrf_field() !!}
+
+                    <button type="submit" class="close-icon btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+
+                    </form>
 
                 </div> <!-- col-6 / end -->
 
                 @endforeach
-                <button class="btn btn-success btn-block btn-lg" type="submit" onclick="if(!this.form.numero.checked){alert('Para poder descargar por favor seleccione al menos una imagen.');return false}">Descargar Imagenes Seleccionadas</button>
-
-            </form>
-
 
             @endif
 
