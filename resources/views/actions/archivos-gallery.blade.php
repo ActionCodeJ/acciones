@@ -64,10 +64,11 @@
 
 
 
-    <h3>Galeria de Imagenes</h3>
+    <h3>Galeria de Archivos</h3>
+
     <div class="row">
         <div class="col-md-12">
-            <form method="GET" action="{{ route('image.gallery') }}" class="row">
+            <form method="GET" action="{{ route('archivos.gallery') }}" class="row">
                 <div class="col-md-6">
                     <input type="input" name="search" class="form-control" placeholder="Buscar..." value="{{ request()->get('search') }}">
                 </div>
@@ -78,44 +79,42 @@
         </div>
     </div>
     <hr>
-
-
     <div class="row">
 
     <div class='listado-imagenes  gallery'>
 
 
 
-            @if($images->count())
-            <form action="{{ route('file.descargar') }}" method="POST" enctype="multipart/form-data">
+            @if($documentos->count())
+            <form action="{{ route('archivos.descargar') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
 
-                @foreach($images as $image)
+                @foreach($documentos as $document)
 
                 <div class='col-sm-4 col-xs-6 col-md-3 col-lg-3'>
 
-                    <a class="thumbnail fancybox" rel="ligthbox" href="{{ $image->image_path }}">
+                    <a class="thumbnail fancybox" rel="ligthbox" href="{{ $document->path }}">
 
-                        <img class="img-responsive" alt="" src="{{ $image->image_path }}" />
+                        <img class="img-responsive" alt="" src="../images/file.png" />
 
                         <div class='text-center'>
 
-                            <small class='text-muted'>{{ $image->name}}</small>
+                            <small class='text-muted'>{{ $document->name}}</small>
 
                         </div> <!-- text-center / end -->
 
                     </a>
 
 
-                     <input  class="close-icon btn btn-sucess" type="checkbox" name="numero[]" value="{{ $image->id }}" >
+                     <input  class="close-icon btn btn-sucess" type="checkbox" name="numero[]" value="{{ $document->id }}" >
 
                     
 
                 </div> <!-- col-6 / end -->
 
                 @endforeach
-                <button class="btn btn-success btn-block btn-lg" type="submit" onclick="if(!this.form.numero.checked){alert('Para poder descargar por favor seleccione al menos una imagen.');return false}">Descargar Imagenes Seleccionadas</button>
+                <button class="btn btn-success btn-block btn-lg" type="submit" onclick="if(!this.form.numero.checked){alert('Para poder descargar por favor seleccione al menos una documentn.');return false}">Descargar documentos Seleccionadas</button>
 
             </form>
 

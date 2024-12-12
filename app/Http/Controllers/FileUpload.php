@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Action;
 use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -83,9 +84,40 @@ public function converToZip($imgarr)
 
     }
 
-    public function index()
+    public function index(Request $request)
 
     {
+
+         // Verificamos si hay un término de búsqueda
+         if ($request->has('search') && $request->search != null) {
+              // Iniciamos la consulta para obtener las acciones con la relación de 'localidad' y 'departamento' de la localidad
+         $query = Action::orderBy('id', 'desc')->with('localidad.departamento');
+
+        
+            $search = $request->search;
+             // Filtramos las acciones por el contenido de las columnas 'nombre' y 'descripcion', o por el nombre de la localidad
+             $query->where('nombre', 'LIKE', "%$search%")
+                 ->orWhere('descripcion', 'LIKE', "%$search%")
+                 ->orWhere('tags', 'LIKE', "%$search%")
+ 
+                 ->orWhere('fecha', 'LIKE', "%$search%")
+ 
+                 ->orWhereHas('localidad', function ($q) use ($search) {
+                     $q->where('nombre', 'LIKE', "%$search%")
+                       ->orWhereHas('departamento', function ($q) use ($search) {
+                           $q->where('nombre', 'LIKE', "%$search%");
+                       });
+                 })
+                 ->orWhereHas('entidad', function ($q) use ($search) {
+                     $q->where('nombre', 'LIKE', "%$search%");
+                 });
+                  // Ejecutamos la consulta y obtenemos las acciones filtradas
+                  $actions = $query->pluck('id');
+                 // dd($actions);
+                  $images = Image::whereIn('action_id', $actions)->get();
+         }else
+ 
+        
 
     	$images = Image::get();
 
