@@ -80,8 +80,15 @@
                     </a>
                 </li>
 
+                
 
-
+                <li class="nav-item has-treeview">
+                   
+                    <a href="{{ route('archivos.gallery') }}" class="nav-link {{ activeSegment('archivos') }}">
+                        <i class="nav-icon fas fa-archive"></i>
+                        <p>Archivos</p>
+                    </a>
+                </li>
 
 
 
