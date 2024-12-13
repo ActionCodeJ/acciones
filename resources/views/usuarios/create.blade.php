@@ -5,42 +5,41 @@
 
 @section('content')
 
-<style>
-    .select2-container--default .select2-selection--multiple .select2-selection__choice {
-        background-color: #cdd3f1;
-        border: 1px solid #3c3ff3;
-        border-radius: 4px;
-        cursor: default;
-        float: left;
-        margin-right: 5px;
-        margin-top: 5px;
-        padding: 0 5px;
-    }
+    <style>
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #cdd3f1;
+            border: 1px solid #3c3ff3;
+            border-radius: 4px;
+            cursor: default;
+            float: left;
+            margin-right: 5px;
+            margin-top: 5px;
+            padding: 0 5px;
+        }
 
 
-    .select2-red+.select2-container--default .select2-selection--multiple .select2-selection__choice {
-        background-color: #f1a5e5;
-        border: 1px solid #d1089f;
-        border-radius: 4px;
-        cursor: default;
-        float: left;
-        margin-right: 5px;
-        margin-top: 5px;
-        padding: 0 5px;
-    }
-</style>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+        .select2-red+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #f1a5e5;
+            border: 1px solid #d1089f;
+            border-radius: 4px;
+            cursor: default;
+            float: left;
+            margin-right: 5px;
+            margin-top: 5px;
+            padding: 0 5px;
+        }
+    </style>
 
-<script>
-    $(document).ready(function() {
-        // Initialize Select2
-        $(".js-example-responsive").select2({
-            placeholder: "Seleccione una o más entidades",
-            width: 'resolve' // need to override the changed default
+
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2
+            $(".js-example-responsive").select2({
+                width: 'resolve' // need to override the changed default
+            });
+        
         });
-    });
-</script>
+    </script>
 
 
 
@@ -110,13 +109,11 @@
 
                 <div class="form-group col-lg-8 col-8">
                     <label for="entities">Entidades Habilitadas</label>
-                    <select name="entities[]" class="form-control js-example-responsive" multiple="multiple" style="width: 95%">
-                        <option value="" disabled>Seleccione una o más entidades</option>
+                    <select name="entities[]" class="form-control js-example-responsive" multiple="multiple"
+                        style="width: 95%">
+                        
                         @foreach ($entities as $entity)
-                            <option value="{{ $entity->id }}" 
-                                {{ in_array($entity->id, old('entities', [])) ? 'selected' : '' }}>
-                                {{ $entity->nombre }}
-                            </option>
+                            <option value="{{ $entity->id }}"> {{ $entity->nombre }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -169,6 +166,4 @@
         });
     </script>
 
-    
-    
 @endsection

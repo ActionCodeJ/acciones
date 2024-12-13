@@ -71,7 +71,7 @@ class UsuarioController extends Controller
 
         //ahora guardamos las entidades habilitadas
         $entities = $request->input('entities');
-       
+
         if ($user && is_array($entities)) {
             $entityData = [];
             foreach ($entities as $entity_id) {
@@ -84,7 +84,7 @@ class UsuarioController extends Controller
                     ];
                 }
             }
-    
+
             // Insertar múltiples entidades de una sola vez
             if (!empty($entityData)) {
                 UserEntity::insert($entityData);
@@ -167,6 +167,28 @@ class UsuarioController extends Controller
 
         if (!$user->save()) {
             return redirect()->back()->with('error', 'Sorry, Something went wrong while updating the User.');
+        }
+        $user->entities()->delete();
+        //ahora guardamos las entidades habilitadas
+        $entities = $request->input('entities');
+
+        if ($user && is_array($entities)) {
+            $entityData = []; 
+            foreach ($entities as $entity_id) {
+                if (!empty($entity_id)) {
+                    $entityData[] = [
+                        'id_user'   => $user->id,
+                        'id_entity' => $entity_id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+
+            // Insertar múltiples entidades de una sola vez
+            if (!empty($entityData)) {
+                UserEntity::insert($entityData);
+            }
         }
 
         return redirect()->route('usuarios.index')->with('success', 'Success, la cuenta ha sido modificada.');

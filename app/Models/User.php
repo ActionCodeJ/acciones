@@ -67,7 +67,7 @@ class User extends Authenticatable
     }
     public function entities()
     {
-        return $this->hasMany(Entity::class);
+        return $this->hasMany(UserEntity::class);
     }
 
 }
