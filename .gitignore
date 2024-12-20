@@ -1,4 +1,4 @@
 
-/storage
 /vendor
+/storage
 .env
