@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.admin2')
 
 @section('title', 'Actualizar cuenta Usuario')
 @section('content-header', 'Actualizar cuenta de Usuario')
@@ -105,7 +105,7 @@
                 <div class="form-group col-lg-8 col-8">
                     <label for="entities">Entidades Habilitadas</label>
                     @php
-                    $select = [];
+                    $selected = [];
                     foreach ($user->entities as $entity) {
                         $selected[]=$entity->id_entity
                     }
