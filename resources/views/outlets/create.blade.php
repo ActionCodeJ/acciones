@@ -21,9 +21,19 @@
        
     <div id="map"></div>
     <script> 
-      
-var mapCenter = [{{ request('latitude', config('leaflet.map_center_latitude')) }}, {{ request('longitude', config('leaflet.map_center_longitude')) }}];
-    var map = L.map('map').setView(mapCenter, 15);
+       var latitude = {{$latitude}};
+       var longitude = {{$longitude}};
+       var mapCenter = [{{ request('latitude', config('leaflet.map_center_latitude')) }}, {{ request('longitude', config('leaflet.map_center_longitude')) }}];
+
+       if(latitude){
+         mapCenter = [latitude , longitude ];
+
+       }
+
+       
+
+//var mapCenter = [{{ request('latitude', config('leaflet.map_center_latitude')) }}, {{ request('longitude', config('leaflet.map_center_longitude')) }}];
+    var map = L.map('map').setView(mapCenter, 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -139,8 +149,9 @@ var mapCenter = [{{ request('latitude', config('leaflet.map_center_latitude')) }
                     
                 </div>
                 <div class="card-footer">
-                    <input type="submit" value="Registrar" class="btn btn-success">
-                    <a href="{{ route('actions.index') }}" class="btn btn-link">{{ __('cancelar') }}</a>
+                    <input type="submit" value="Registrar Mapa" class="btn btn-success">
+                    <a href="{{ route('actions.show', $action) }}" class="btn btn-danger">{{ __('Volver') }}</a>
+
                 </div>
             </form>
         </div>
