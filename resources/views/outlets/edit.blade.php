@@ -1,109 +1,38 @@
-@extends('layouts.app')
-
-@section('title', __('outlet.edit'))
+@extends('layouts.admin')
+@section('title', __('Registar Mapa'))
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        @if (request('action') == 'delete' && $outlet)
-         @can('delete', $outlet)
-            <div class="card">
-                <div class="card-header">{{ __('outlet.delete') }}</div>
-                <div class="card-body">
-                    <label class="control-label text-primary">{{ __('outlet.name') }}</label>
-                    <p>{{ $outlet->name }}</p>
-                    <label class="control-label text-primary">Referencia</label>
-                    <p>{{ $outlet->address }}</p>
-                    <label class="control-label text-primary">Observacion</label>
-                    <p>{{ $outlet->observacion }}</p>
-                    <label class="control-label text-primary">{{ __('outlet.latitude') }}</label>
-                    <p>{{ $outlet->latitude }}</p>
-                    <label class="control-label text-primary">{{ __('outlet.longitude') }}</label>
-                    <p>{{ $outlet->longitude }}</p>
-                    {!! $errors->first('outlet_id', '<span class="invalid-feedback" role="alert">:message</span>') !!}
-                </div>
-                <hr style="margin:0">
-                <div class="card-body text-danger">{{ __('outlet.delete_confirm') }}</div>
-                <div class="card-footer">
-                    <form method="POST" action="{{ route('outlets.destroy', $outlet) }}" accept-charset="UTF-8" onsubmit="return confirm(&quot;{{ __('app.delete_confirm') }}&quot;)" class="del-form float-right" style="display: inline;">
-                        {{ csrf_field() }} {{ method_field('delete') }}
-                        <input name="outlet_id" type="hidden" value="{{ $outlet->id }}">
-                        <button type="submit" class="btn btn-danger">{{ __('app.delete_confirm_button') }}</button>
-                    </form>
-                    <a href="{{ route('outlets.edit', $outlet) }}" class="btn btn-link">{{ __('app.cancel') }}</a>
-                </div>
-            </div>
-        @endcan
-        @else
-        <div class="card">
-            <div class="card-header">{{ __('outlet.edit') }}</div>
-            <form method="POST" action="{{ route('outlets.update', $outlet) }}" accept-charset="UTF-8">
-                {{ csrf_field() }} {{ method_field('patch') }}
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="name" class="control-label">{{ __('outlet.name') }}</label>
-                        <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name', $outlet->name) }}" required>
-                        {!! $errors->first('name', '<span class="invalid-feedback" role="alert">:message</span>') !!}
-                    </div>
-                    <div class="form-group">
-                        <label for="observacion" class="control-label">observacion</label>
-                        <textarea id="observacion" class="form-control{{ $errors->has('observacion') ? ' is-invalid' : '' }}" name="observacion" rows="4">{{ old('observacion', $outlet->observacion) }}</textarea>
-                        {!! $errors->first('observacion', '<span class="invalid-feedback" role="alert">:message</span>') !!}
-                    </div>
-                     <div class="form-group">
-                        <label for="address" class="control-label">Referencia</label>
-                        <textarea id="address" class="form-control{{ $errors->has('address') ? ' is-invalid' : '' }}" name="address" rows="4">{{ old('address', $outlet->address) }}</textarea>
-                        {!! $errors->first('address', '<span class="invalid-feedback" role="alert">:message</span>') !!}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="latitude" class="control-label">{{ __('outlet.latitude') }}</label>
-                                <input id="latitude" type="text" class="form-control{{ $errors->has('latitude') ? ' is-invalid' : '' }}" name="latitude" value="{{ old('latitude', $outlet->latitude) }}" required>
-                                {!! $errors->first('latitude', '<span class="invalid-feedback" role="alert">:message</span>') !!}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="longitude" class="control-label">{{ __('outlet.longitude') }}</label>
-                                <input id="longitude" type="text" class="form-control{{ $errors->has('longitude') ? ' is-invalid' : '' }}" name="longitude" value="{{ old('longitude', $outlet->longitude) }}" required>
-                                {!! $errors->first('longitude', '<span class="invalid-feedback" role="alert">:message</span>') !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div id="mapid"></div>
-                </div>
-                <div class="card-footer">
-                    <input type="submit" value="{{ __('outlet.update') }}" class="btn btn-success">
-                    <a href="{{ route('outlets.show', $outlet) }}" class="btn btn-link">{{ __('app.cancel') }}</a>
-                    @can('delete', $outlet)
-                        <a href="{{ route('outlets.edit', [$outlet, 'action' => 'delete']) }}" id="del-outlet-{{ $outlet->id }}" class="btn btn-danger float-right">{{ __('app.delete') }}</a>
-                    @endcan
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endif
-@endsection
 
-@section('styles')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
-    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
-    crossorigin=""/>
 
-<style>
-    #mapid { height: 300px; }
-</style>
-@endsection
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+     <style> 
+        #map { 
+          width: 100%; 
+          height: 380px; 
+          box-shadow: 5px 5px 5px #888; 
+        } 
+       </style>
+       
+    <div id="map"></div>
+    <script> 
+       var latitude = {{$latitude}};
+       var longitude = {{$longitude}};
+       var mapCenter = 
+      
+         mapCenter = [latitude , longitude ];
 
-@push('scripts')
-<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"
-    integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
-    crossorigin=""></script>
-<script>
-    var mapCenter = [{{ $outlet->latitude }}, {{ $outlet->longitude }}];
-    var map = L.map('mapid').setView(mapCenter, {{ config('leaflet.detail_zoom_level') }});
+       
+
+       
+
+//var mapCenter = [{{ request('latitude', config('leaflet.map_center_latitude')) }}, {{ request('longitude', config('leaflet.map_center_longitude')) }}];
+    var map = L.map('map').setView(mapCenter, 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -113,7 +42,7 @@
     function updateMarker(lat, lng) {
         marker
         .setLatLng([lat, lng])
-        .bindPopup("Your location :  " + marker.getLatLng().toString())
+        .bindPopup("Tu ubicacion :  " + marker.getLatLng().toString())
         .openPopup();
         return false;
     };
@@ -131,5 +60,62 @@
     }
     $('#latitude').on('input', updateMarkerByInputs);
     $('#longitude').on('input', updateMarkerByInputs);
+        </script>
+</body> 
+
+
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header"><i class="fa fa-map-marker text-primary" aria-hidden="true"></i> {{ __('Marcar en el Mapa( Usar el mouse en la imagen del mapa)') }} <i class="fa fa-map-marker text-primary" aria-hidden="true"></i></div>
+            <form method="POST" action="{{ route('outlets.update', $outlet) }}" accept-charset="UTF-8">
+                {{ csrf_field() }} {{ method_field('patch') }}
+           
+                <div class="card-body">
+
+                    <label for="name" class="control-label">Actividad: {{ $outlet->action->nombre}}</label>
+
+                   
+                    
+                  
+                    
+                   
+                    <div class="d-none">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="latitude" class="control-label">{{ __('outlet.latitude') }}</label>
+                                <input id="latitude" type="text" class="form-control{{ $errors->has('latitude') ? ' is-invalid' : '' }}" name="latitude" value="{{ old('latitude', $outlet->latitude) }}" required>
+                                {!! $errors->first('latitude', '<span class="invalid-feedback" role="alert">:message</span>') !!}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="longitude" class="control-label">{{ __('outlet.longitude') }}</label>
+                                <input id="longitude" type="text" class="form-control{{ $errors->has('longitude') ? ' is-invalid' : '' }}" name="longitude" value="{{ old('longitude', $outlet->longitude) }}" required>
+                                {!! $errors->first('longitude', '<span class="invalid-feedback" role="alert">:message</span>') !!}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                </div>
+                <div class="card-footer">
+                    <input type="submit" value="Actualizar Mapa" class="btn btn-success">
+                    <a href="{{ route('actions.show', $outlet->action) }}" class="btn btn-danger">{{ __('Volver') }}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection
+
+
+
+<script>
+   
+
+   
 </script>
-@endpush
+

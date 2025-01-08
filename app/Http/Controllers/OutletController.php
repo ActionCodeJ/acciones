@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Action;
 use App\Models\Image;
+use App\Models\Localidad;
 use App\Models\Outlet;
 use Illuminate\Http\Request;
 
@@ -35,8 +36,25 @@ class OutletController extends Controller
         //$this->authorize('create', new Outlet);
        $action_id= $request->get("action_id");
        $action = Action::find($action_id);
-//print_r($action);
-        return view('outlets.create', compact('action'));
+       $localidad=$action->localidad;
+       $latitude=-24.185595; 
+       $longitude=-65.298916;
+       if(!empty($localidad)){
+            $departamento=$action->localidad->departamento;
+            //print_r($departamento);
+            if(!empty($departamento)){
+                if(!empty($departamento->latitude))
+                $latitude=$departamento->latitude;
+
+                if(!empty($departamento->longitude))
+                $longitude=$departamento->longitude;
+                 
+
+            }
+       }
+
+        
+        return view('outlets.create', compact('action','latitude','longitude'));
     }
 
     /**
@@ -101,7 +119,26 @@ class OutletController extends Controller
     {
       //  $this->authorize('update', $outlet);
 
-        return view('outlets.edit', compact('outlet'));
+      $latitude=-24.185595; 
+       $longitude=-65.298916;
+       if(!empty($outlet)){
+          
+            //print_r($departamento);
+            
+                if(!empty($outlet->latitude))
+                $latitude=$outlet->latitude;
+
+                if(!empty($outlet->longitude))
+                $longitude=$outlet->longitude;
+                 
+
+           
+       }
+
+     //   echo ('latitude:'.$latitude.'---longitude:'.$longitude);
+        return view('outlets.edit', compact('outlet','latitude','longitude'));
+
+
     }
 
     /**
@@ -113,21 +150,19 @@ class OutletController extends Controller
      */
     public function update(Request $request, Outlet $outlet)
     {
-        $this->authorize('update', $outlet);
+       // $this->authorize('update', $outlet);
 
         $outletData = $request->validate([
             
-             'name'      => 'required|max:60',
-            'address'   => 'nullable|max:255',
-            'observacion'   => 'nullable|max:255',
-            'celular'   => 'nullable|max:25',
-            'email'     => 'nullable|email',
+            
             'latitude'  => 'nullable|required_with:longitude|max:15',
             'longitude' => 'nullable|required_with:latitude|max:15',
         ]);
+
+
         $outlet->update($outletData);
 
-        return redirect()->route('outlets.show', $outlet);
+        return redirect()->route('actions.show', $outlet->action_id);
     }
 
     /**
