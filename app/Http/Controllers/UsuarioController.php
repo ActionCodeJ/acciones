@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Models\User;
+use App\Models\Entity;
+use App\Models\UserEntity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
 
 class UsuarioController extends Controller
 {
@@ -20,12 +23,12 @@ class UsuarioController extends Controller
         $users = new User();
 
         if ($request->nombre) {
-            $users = $users->where('first_name', 'LIKE', '%'.$request->nombre.'%');
+            $users = $users->where('first_name', 'LIKE', '%' . $request->nombre . '%');
         }
         if ($request->apellido) {
-            $users = $users->where('last_name', 'LIKE', '%'.$request->apellido.'%');
+            $users = $users->where('last_name', 'LIKE', '%' . $request->apellido . '%');
         }
-      
+
         $users = $users->latest()->paginate(20);
 
         //$users = User::latest()->paginate(10);
@@ -40,7 +43,11 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        return view('usuarios.create');
+        //$entities = Entity::all();
+
+        $entities = Entity::orderBy('nombre', 'asc')->get();
+
+        return view('usuarios.create', compact('entities'));
     }
 
     /**
@@ -52,29 +59,40 @@ class UsuarioController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
-        $User = User::create([
+        $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
             'rol' => $request->rol,
-
             'password' => Hash::make($request->password),
-            'calle'=>$request->calle,
-            'numero'=>$request->numero,
-            'departamento'=>$request->departamento,
-            'ciudad'=>$request->ciudad,
-            'pais'=>$request->pais,
-            'codigo_postal'=>$request->codigo_postal,
-
-            'telefono'=>$request->telefono,
-            'telefono_consultorio'=>$request->telefono_consultorio,
-     
-
-
-
+            'entity_id' => $request->entity_id,
+            'telefono' => $request->telefono,
         ]);
 
-        if (!$User) {
+        //ahora guardamos las entidades habilitadas
+        $entities = $request->input('entities');
+
+        if ($user && is_array($entities)) {
+            $entityData = [];
+            foreach ($entities as $entity_id) {
+                if (!empty($entity_id)) {
+                    $entityData[] = [
+                        'id_user'   => $user->id,
+                        'id_entity' => $entity_id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+
+            // Insertar múltiples entidades de una sola vez
+            if (!empty($entityData)) {
+                UserEntity::insert($entityData);
+            }
+        }
+
+
+        if (!$user) {
             return redirect()->back()->with('error', ' No se logor registrar el usuario.');
         }
 
@@ -92,24 +110,15 @@ class UsuarioController extends Controller
         $user->first_name = $user->first_name;
         $user->last_name = $user->last_name;
         $user->email = $user->email;
+        $user->entity_id = $user->entity_id;
         $user->rol = 'COMUN';
-        $user->calle = $user->calle;
-        $user->numero = $user->numero;
-        $user->departamento = $user->departamento;
-        $user->ciudad = $user->ciudad;
-        $user->pais = $user->pais;
-        $user->codigo_postal = $user->codigo_postal;
-
-        $user->telefono =$user->telefono;
-        $user->telefono_consultorio = $user->telefono_consultorio;
-       
-
+        $user->telefono = $user->telefono;
 
         if (!$user->save()) {
             return redirect()->back()->with('error', 'Sorry, Something went wrong while updating the User.');
         }
 
-        return redirect()->route('usuarios.index')->with('success', $user->first_name.' '.$user->last_name.' - Cuenta Activada, la cuenta ha sido modificada para ingresar al sistema.');
+        return redirect()->route('usuarios.index')->with('success', $user->first_name . ' ' . $user->last_name . ' - Cuenta Activada, la cuenta ha sido modificada para ingresar al sistema.');
     }
 
     /**
@@ -119,7 +128,11 @@ class UsuarioController extends Controller
      */
     public function edit(User $usuario)
     {
-        return view('usuarios.edit')->with('user', $usuario);
+        $entities = Entity::all();
+
+        //        return view('teams.edit', compact('team', 'entities'));
+
+        return view('usuarios.edit', compact('usuario', 'entities'))->with('user', $usuario);
     }
 
     /**
@@ -129,36 +142,53 @@ class UsuarioController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $this->validate(request(), [
-            'first_name' => 'required|string|max:20',
-            'last_name' => 'required|string|max:20',
-            'email'  => 'required|email|max:255|unique:users,email,' . $user->id,
-            
-        ],
-        [
-           'email.required' => 'El Email es obligatorio',
-  'email.max' => 'El Email no debe exceder los 128 caracteres',
-  'email.unique' => 'Ya existe un usuario con este Email',
-        ]
-     );
-       
+        $this->validate(
+            request(),
+            [
+                'first_name' => 'required|string|max:20',
+                'last_name' => 'required|string|max:20',
+                'email'  => 'required|email|max:255|unique:users,email,' . $user->id,
+
+            ],
+            [
+                'email.required' => 'El Email es obligatorio',
+                'email.max' => 'El Email no debe exceder los 128 caracteres',
+                'email.unique' => 'Ya existe un usuario con este Email',
+            ]
+        );
+
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->rol = $request->rol;
         $user->password = Hash::make($request->password);
-        $user->calle = $request->calle;
-        $user->numero = $request->numero;
-        $user->departamento = $request->departamento;
-        $user->ciudad = $request->ciudad;
-        $user->pais = $request->pais;
-        $user->codigo_postal = $request->codigo_postal;
-        $user->telefono= $request->telefono;
-        $user->telefono_consultorio= $request->telefono_consultorio;
-        
+        $user->entity_id = $request->entity_id;
+        $user->telefono = $request->telefono;
 
         if (!$user->save()) {
             return redirect()->back()->with('error', 'Sorry, Something went wrong while updating the User.');
+        }
+        $user->entities()->delete();
+        //ahora guardamos las entidades habilitadas
+        $entities = $request->input('entities');
+
+        if ($user && is_array($entities)) {
+            $entityData = []; 
+            foreach ($entities as $entity_id) {
+                if (!empty($entity_id)) {
+                    $entityData[] = [
+                        'id_user'   => $user->id,
+                        'id_entity' => $entity_id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+
+            // Insertar múltiples entidades de una sola vez
+            if (!empty($entityData)) {
+                UserEntity::insert($entityData);
+            }
         }
 
         return redirect()->route('usuarios.index')->with('success', 'Success, la cuenta ha sido modificada.');
@@ -167,7 +197,7 @@ class UsuarioController extends Controller
     public function destroy(User $user)
     {
 
-       // echo($user->id);
+        // echo($user->id);
         if ($user->avatar) {
             Storage::delete($user->avatar);
         }

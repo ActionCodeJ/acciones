@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cuenta;
 use App\Models\User;
+use App\Models\Entity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -132,5 +133,11 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
         ]);
+    }
+    //funcion q trae las entidades habilitadas
+    public function entidadesHabilitadas()
+    {
+        $entidades = Entity::all();
+        return view('user.entities', compact('entidades'));
     }
 }

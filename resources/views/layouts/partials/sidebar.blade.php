@@ -105,21 +105,8 @@
                 <li class="nav-item has-treeview">
                     <a href="{{ route('actionTypes.index') }}" class="nav-link {{ activeSegment('actionType') }}">
                         <i class="nav-icon fas fa-th-list"></i>
-                        <p>Tipos</p>
-
-                    <a href="{{ route('actionTypes.index') }}" class="nav-link {{ activeSegment('actionTypes') }}">
-                        <i class="nav-icon fas fa-address-book"></i>
-                        <p>Tipos</p>
-                    </a>
+                        <p>Tipos de actividad</p>
                 </li>
-                
-                <li class="nav-item has-treeview">
-                    <a href="{{ route('actionStates.index') }}" class="nav-link {{ activeSegment('actionStates') }}">
-                        <i class="nav-icon fas fa-address-book"></i>
-                        <p>Estados</p>
-                    </a>
-                </li>
-
                 @php
                     $fecha = date('Y-m-d');
                     $start_date = date('Y-m-d', strtotime('-5 days', strtotime($fecha)));

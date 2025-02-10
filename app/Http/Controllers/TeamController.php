@@ -9,9 +9,25 @@ use App\Models\Team;
 
 class TeamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
+
     {
-        $teams = Team::with('entity')->orderBy('nombre', 'asc')->get();
+
+        $query = Team::with('entity')
+        ->orderBy('apellido', 'asc')
+        ->orderBy('nombre', 'asc');
+        if ($request->has('search') && $request->search != null) {
+            $search = $request->search;
+
+            // Aplicamos los filtros en la consulta
+            $query->where('nombre', 'LIKE', "%$search%")
+                ->orWhere('apellido', 'LIKE', "%$search%")
+                ->orWhereHas('entity', function ($q) use ($search) {
+                    $q->where('nombre', 'LIKE', "%$search%");
+                });
+        }
+        $teams = $query->get();
+
         return view('teams.index', compact('teams'));
     
     }

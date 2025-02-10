@@ -1,0 +1,1 @@
+ALTER TABLE `user_entities` ADD `created_at` DATE NULL AFTER `observacion`, ADD `updated_at` DATE NULL AFTER `created_at`;

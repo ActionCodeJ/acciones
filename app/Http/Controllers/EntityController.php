@@ -8,9 +8,21 @@ use App\Models\Entity;
 
 class EntityController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $entities = Entity::with('entidad_padre')->orderBy('nombre', 'asc')->get();
+        $query = Entity::with('entidad_padre')->orderBy('nombre', 'asc');
+         // Si hay un filtro de búsqueda
+         if ($request->has('search') && $request->search != null) {
+            $search = $request->search;
+
+            // Aplicamos los filtros en la consulta
+            $query->where('nombre', 'LIKE', "%$search%")
+                ->orWhereHas('entidad_padre', function ($q) use ($search) {
+                    $q->where('nombre', 'LIKE', "%$search%");
+                });
+        }
+
+        $entities = $query->get();
         return view('entities.index', compact('entities'));
     }
 
