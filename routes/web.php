@@ -33,6 +33,8 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProgramController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MailController;
+
 use PhpParser\Node\Stmt\Echo_;
 
 /* NOOOOOOOOOOOOO tocar siempre comenta
@@ -42,6 +44,10 @@ Route::get('generate', function () {
 });
 
 */
+
+
+Route::get('send-mail', [MailController::class, 'index']);
+
 Route::get('/region', [OutletMapController::class, 'region'])->name('outlet_map.region');
 
 Route::get('outlets/{outlet}/show', [OutletController::class, 'show'])->name('outlets.mostrar');
