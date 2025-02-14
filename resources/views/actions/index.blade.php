@@ -3,7 +3,7 @@
 @section('title', ' Actividades')
 @section('content-header', ' Actividades')
 @section('content-actions')
-   
+
     <a href="{{ route('actions.create') }}" class="btn btn-success ml-2"><i class="fas fa-plus"></i> Registrar nueva
         Actividad</a>
 @endsection
@@ -19,7 +19,8 @@
                 <div class="col-md-12">
                     <form method="GET" action="{{ route('actions.index') }}" class="row">
                         <div class="col-md-6">
-                            <input type="input" name="search" class="form-control" placeholder="Buscar..." value="{{ request()->get('search') }}">
+                            <input type="input" name="search" class="form-control" placeholder="Buscar..."
+                                value="{{ request()->get('search') }}">
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-primary" type="submit"><i class="fas fa-filter"></i> Buscar </button>
@@ -31,6 +32,7 @@
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                     <tr>
+                        <td>#</td>
                         <td>Actividad</td>
                         <td>Descripcion</td>
                         <td>Fecha</td>
@@ -42,12 +44,14 @@
                 <tbody>
                     @foreach ($actions as $accion)
                         <tr>
+                            <td>{{$accion->id}}</td>
                             <td>{{ $accion->nombre }}</td>
                             <td>{{ \Illuminate\Support\Str::limit($accion->descripcion, 150, ' (...)') }}</td>
 
                             <td>{{ date('d/m/Y', strtotime($accion->fecha)) }}</td>
                             <td>{{ $accion->entidad->nombre }}</td>
                             <td>{{ $accion->localidad->nombre }} - {{ $accion->localidad->departamento->nombre }}</td>
+                            
                             <td>
                                 <a href="{{ route('actions.show', $accion) }}" class="btn btn-success" title="Ver Datos"><i
                                         class="fas fa-eye"></i></a>
@@ -56,6 +60,10 @@
                                 <button class="btn btn-danger btn-delete"
                                     data-url="{{ route('actions.destroy', $accion) }}"><i
                                         class="fas fa-trash"></i></button>
+
+                                <a href="{{ route('actions.public', Crypt::encrypt($accion->id)) }}" class="btn btn-link" target="_blank">
+                                    <i class="fas fa-link"></i> </a>
+
                             </td>
                         </tr>
                     @endforeach

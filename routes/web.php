@@ -42,6 +42,16 @@ Route::get('generate', function () {
 });
 
 */
+
+
+// Ruta pública para ver una acción sin autenticación
+Route::get('/actions/public/{id}', [ActionController::class, 'publicShow'])->name('actions.public');
+
+// Rutas protegidas que requieren autenticación
+Route::middleware('auth')->group(function () {
+    Route::resource('actions', ActionController::class)->except(['show']);
+});
+
 Route::get('/region', [OutletMapController::class, 'region'])->name('outlet_map.region');
 
 Route::get('outlets/{outlet}/show', [OutletController::class, 'show'])->name('outlets.mostrar');
@@ -59,7 +69,6 @@ Route::post('/image-upload', 'FileUpload@fileUpload')->name('imageUpload');
 Route::get('/', function () {
     return redirect('/login');
 });
-
 Auth::routes();
 
 Route::prefix('admin')->middleware('auth')->group(function () {
@@ -71,8 +80,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::resource('customers', CustomerController::class);
     Route::resource('orders', OrderController::class);
-    Route::resource('cuentas', CuentaController::class);  
-    
+    Route::resource('cuentas', CuentaController::class);
+
     Route::resource('fincas', FincaController::class);
     Route::resource('simulador', SimulatorController::class);
     Route::resource('summary', SummaryController::class);
@@ -169,11 +178,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/cart/change-qty', [CartController::class, 'changeQty']);
     Route::delete('/cart/delete', [CartController::class, 'delete']);
     Route::delete('/cart/empty', [CartController::class, 'empty']);
-    
+
     Route::get('/localidades', [LocalidadController::class, 'index'])->name('localidades.index');
-    
+
     Route::get('localidades/{localidad}/edit',   [LocalidadController::class, 'edit'])->name('localidades.edit');
-    
+
     Route::get('localidades/create', [LocalidadController::class, 'create'])->name('localidades.create');
     //Route::put('localidades/{localidad}/update', [LocalidadController::class, 'update'])->name('localidades.update');
     Route::put('localidades/{localidad}', [LocalidadController::class, 'update'])->name('localidades.update');
@@ -198,7 +207,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::delete('teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
     Route::get('teams/{team}',    [TeamController::class, 'show'])->name('teams.show');
 
-   
+
     Route::resource('programs', ProjectController::class);
     Route::get('/programs', [ProgramController::class, 'index'])->name('programs.index');
     Route::get('programs/{program}/edit',   [ProgramController::class, 'edit'])->name('programs.edit');
@@ -241,28 +250,30 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/our_outlets', [OutletMapController::class, 'index'])->name('outlet_map.index');
 
+
+    Route::resource('outlets', OutletController::class);
+    Route::get('/our_outlets', [OutletMapController::class, 'index'])->name('outlet_map.index');
+
+
+    // Create image upload form
+    Route::get('/image-upload', 'FileUpload@createForm');
+
+    // Store image
+    Route::post('/image-upload', [FileUpload::class, 'fileUpload'])->name('imageUpload');
+    // Create document pdf  upload form
+    Route::get('/document-upload', 'DocumentUpload@createForm');
+
+    // Store image
+    Route::post('/document-upload', [DocumentUpload::class, 'DocumentUpload'])->name('documentUpload');
+
+    Route::delete('document-upload/{document}', [DocumentUpload::class, 'destroy'])->name('documentUpload.destroy');
+    Route::delete('image-upload/{image}', [FileUpload::class, 'destroy'])->name('image.destroy');
+
     
-Route::resource('outlets', OutletController::class);
-Route::get('/our_outlets', [OutletMapController::class, 'index'])->name('outlet_map.index');
-
-
-// Create image upload form
-Route::get('/image-upload', 'FileUpload@createForm');
-
-// Store image
-Route::post('/image-upload', [FileUpload::class, 'fileUpload'])->name('imageUpload');
-// Create document pdf  upload form
-Route::get('/document-upload', 'DocumentUpload@createForm');
-
-// Store image
-Route::post('/document-upload', [DocumentUpload::class, 'DocumentUpload'])->name('documentUpload');
-
-Route::delete('document-upload/{document}', [DocumentUpload::class, 'destroy'])->name('documentUpload.destroy');
-Route::delete('image-upload/{image}', [FileUpload::class, 'destroy'])->name('image.destroy');
 
 
 
-/*
+    /*
 Route::get('/image-upload', function () {
      echo('/login11111111');
 });
@@ -270,12 +281,14 @@ Route::post('/image-upload', function () {
     echo('/login2');
 })->name('imageUpload');
 */
-// Create image upload form
-//Route::get('/image-upload', 'FileUpload@createForm');
+    // Create image upload form
+    //Route::get('/image-upload', 'FileUpload@createForm');
 
-// Store image
-//Route::post('/image-upload', 'FileUpload@fileUpload')->name('imageUpload');
+    // Store image
+    //Route::post('/image-upload', 'FileUpload@fileUpload')->name('imageUpload');
 
 
 
-});
+}
+
+);
