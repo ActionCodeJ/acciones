@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Mail;
 
-use App\Mail\EMail;
+use App\Mail\Email;
 
 class MailController extends Controller
 {
