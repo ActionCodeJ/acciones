@@ -43,7 +43,8 @@ class Email extends Mailable
 
     {
 
-        return $this->subject('Email de Ministerio de Hacienda')->view('emails.demoMail');
+        return $this->from($address = 'noreply@example.com', $name = 'Enviar Recordatorio')
+        ->subject('Email de Ministerio de Hacienda')->view('emails.demoMail');
 
     }
 
