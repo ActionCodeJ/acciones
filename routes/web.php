@@ -37,6 +37,11 @@ use App\Http\Controllers\MailController;
 
 use PhpParser\Node\Stmt\Echo_;
 
+
+
+Route::get('send-mail', [MailController::class, 'index']);
+
+
 /* NOOOOOOOOOOOOO tocar siempre comenta
 Route::get('generate', function () {
     \Illuminate\Support\Facades\Artisan::call('storage:link');
