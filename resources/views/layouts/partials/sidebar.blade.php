@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-purple elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('home') }}" class="brand-link">
-        <img src="{{ asset('images/logo.jpg') }}" alt=" Logo" class="brand-image img-circle-32 elevation-1"
+        <img src="{{ asset('images/LogoJujuyBlanco.png') }}" alt=" Logo" class="brand-image img-circle-32 elevation-1"
             style="max-height:40px;opacity: .8">
         <span class="brand-text font-weight-light">Actividades</span>
     </a>

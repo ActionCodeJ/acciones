@@ -3,7 +3,7 @@
 @section('title', ' Entidades')
 @section('content-header', ' Entidades')
 @section('content-actions')
-    <a href="{{ route('entities.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> Registar nueva Entidad</a>
+    <a href="{{ route('entities.create') }}" class="btn btn-success"><i class="fas fa-plus"></i> Registrar nueva Entidad</a>
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2/sweetalert2.min.css') }}">
