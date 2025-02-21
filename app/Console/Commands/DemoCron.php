@@ -47,14 +47,31 @@ class DemoCron extends Command
                   $responsable=$accion->team->mail;
 
                 info($responsable."- id: ". $accion->id. "- fecha: ". $accion->fecha );
+               
+                $title= " Asunto: Recordatorio ". $accion->nombre. " - Fecha:". $accion->fecha;
+                $body= " Le recordamos que la actividad ". $accion->nombre. " se llevará a cabo el". $accion->fecha.
+                " en la localidad de ". $accion->localidad->nombre. ".  Esta actividad es organizada por ". $accion->entidad->nombre.
+                " tiene como objetivo ". $accion->descripcion               
+                ;
+
+                $link=  $accion->id;
+
+                $footer= " Atentamente, actividades.jujuy.gob.ar ";
+
+               
+              
+                
+               
                 $mailData = [
  
-                    'title' => 'Email recordatorio del Ministerio de Hacienda',
+                    'title' => $title,
+                    'link' => $link,
+                    'footer' => $footer,
         
-                    'body' => 'Tienes un evento proximo a realizar dentro los 5 dias .'
+                    'body' => $body
         
                 ];
-                Mail::to('actividades.jujuy@gmail.com')->send(new Email($mailData));
+                Mail::to($responsable)->send(new Email($mailData));
 
             }      
             

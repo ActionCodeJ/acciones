@@ -4,23 +4,21 @@
 
 <head>
 
-    <title>Actividades del Ministerio</title>
+    <title>{{ $mailData['title'] }}</title>
 
 </head>
 
 <body>
+      <p>{{ $mailData['body'] }}</p>
 
-    <h1>{{ $mailData['title'] }}</h1>
+      <p>{{ $mailData['link'] }}
 
-    <p>{{ $mailData['body'] }}</p>
+        <a href="{{ route('actions.public', Crypt::encrypt($mailData['link'] )) }}" class="btn btn-link" target="_blank">
+            <i class="fas fa-link"></i> </a>
 
-  
-
-    <p>hola mundo.</p>
-
+      </p>
      
-
-    <p>Thank you</p>
+    <p>{{ $mailData['footer'] }}</p>
 
 </body>
 
