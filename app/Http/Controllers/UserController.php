@@ -113,6 +113,8 @@ class UserController extends Controller
         );
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
+        $user->documento = $request->documento;
+        $user->telefono = $request->telefono;
         $user->email = $request->email;
         $user->rol = $request->rol;
         if (!empty($request->password)) {

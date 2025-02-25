@@ -17,6 +17,7 @@ class User extends Authenticatable
     protected $fillable = [
           'first_name', 
           'last_name',
+          'documento',
           'telefono',
           'email',
           'password',
@@ -65,7 +66,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Entity::class);
     }
-    public function entities()
+    public function entities() 
     {
         return $this->hasMany(UserEntity::class);
     }

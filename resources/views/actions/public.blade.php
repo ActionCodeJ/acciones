@@ -16,25 +16,29 @@
                 <img src="{{ asset($imagenes->first()->image_path) }}" alt="Imagen destacada de {{ $action->name }}"
                     class="card-img-top">
             @endif
-
+           
             <!-- Cuerpo de la tarjeta -->
             <div class="card-body">
                 <p class="card-text">{{ $action->descripcion }}</p>
-
+                <hr class="my-4">
                 <!-- Datos generales en fila -->
                 <div class="row mb-4">
+                    <div class="col-md-4">
+                        <strong>Direccion:</strong>
+                        {{ $action->direccion }}
+                    </div>
                     <div class="col-md-4">
                         <strong>Localidad:</strong>
                         {{ $action->localidad->nombre }} - {{ $action->localidad->departamento->nombre }}
                     </div>
                     <div class="col-md-4">
-                        <strong>Organiza:</strong> {{ $action->entidad->nombre }}
+                        <strong>Organiza:</strong> {{ $action->entidad->nombre }} - {{ $action->entidad->entidad_padre->nombre}}
                     </div>
                     <div class="col-md-4">
                         <strong>Fecha:</strong> {{ date('d/m/Y', strtotime($action->fecha)) }}
                     </div>
                 </div>
-
+                <hr class="my-4">
                 <!-- Sección de Imágenes (solo si existen) -->
                 @if ($action->imagenes->isNotEmpty())
                     <h4 class="mb-3">Imágenes</h4>
