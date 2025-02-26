@@ -36,7 +36,7 @@
 
                 width: 'resolve' // need to override the changed default
             });
-           
+
         });
     </script>
 
@@ -75,17 +75,23 @@
 
                 <div class="form-group col-lg-8 col-8">
                     <label for="documento">Documento</label>
+
                     <input type="text" name="documento" class="form-control" id="documento" placeholder="Documento"
-                        value="{{ old('documento', $user->documento) }}">
+                        value="{{ old('documento', $user->documento) }}"
+                        oninput="this.value = this.value.replace(/\D/g, '')">
+
                 </div>
 
                 <div class="form-group col-lg-8 col-8">
                     <label for="telfono">Telefono</label>
+
                     <input type="text" name="telefono" class="form-control" id="telefono" placeholder="Telefono"
-                        value="{{ old('telefono', $user->telefono) }}">
+                        value="{{ old('telefono', $user->telefono) }}"
+                        oninput="this.value = this.value.replace(/[^0-9\-\(\) ]/g, '')">
+
                 </div>
 
-              
+
 
                 <div class="form-group col-lg-8 col-8">
                     <label for="email">Email</label>
@@ -113,18 +119,17 @@
                 <div class="form-group col-lg-8 col-8">
                     <label for="entities">Entidades Habilitadas</label>
                     @php
-                    $selected = [];
-                    foreach ($user->entities as $entity) {
-                        $selected[]=$entity->id; 
-                    }
+                        $selected = [];
+                        foreach ($user->entities as $entity) {
+                            $selected[] = $entity->id;
+                        }
 
                     @endphp
                     <select name="entities[]" class="form-control js-example-responsive" multiple="multiple"
                         style="width: 95%">
-                        
+
                         @foreach ($entities as $entity)
-                            <option value="{{ $entity->id }}" 
-                                {{ in_array($entity->id, $selected) ? 'selected' : '' }} > 
+                            <option value="{{ $entity->id }}" {{ in_array($entity->id, $selected) ? 'selected' : '' }}>
                                 {{ $entity->nombre }}
                             </option>
                         @endforeach

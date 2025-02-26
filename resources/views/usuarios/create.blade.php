@@ -79,13 +79,15 @@
                 <div class="form-group col-lg-8 col-8">
                     <label for="Documento">Documento</label>
                     <input type="text" name="documento" class="form-control" id="documento" placeholder="documento"
-                        value="{{ old('documento') }}">
+                        value="{{ old('documento') }}"
+                        oninput="this.value = this.value.replace(/\D/g, '')">
                 </div>
 
                 <div class="form-group col-lg-8 col-8">
                     <label for="Telefono">Telefono</label>
                     <input type="text" name="telefono" class="form-control" id="telefono" placeholder="telefono"
-                        value="{{ old('telefono') }}">
+                        value="{{ old('telefono') }}"
+                        oninput="this.value = this.value.replace(/[^0-9\-\(\) ]/g, '')">
                 </div>
 
 
