@@ -62,11 +62,13 @@ class UsuarioController extends Controller
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'documento' => $request->documento,
+            'telefono' => $request->telefono,
             'email' => $request->email,
             'rol' => $request->rol,
             'password' => Hash::make($request->password),
             'entity_id' => $request->entity_id,
-            'telefono' => $request->telefono,
+            
         ]);
 
         //ahora guardamos las entidades habilitadas
@@ -77,8 +79,8 @@ class UsuarioController extends Controller
             foreach ($entities as $entity_id) {
                 if (!empty($entity_id)) {
                     $entityData[] = [
-                        'id_user'   => $user->id,
-                        'id_entity' => $entity_id,
+                        'user_id'   => $user->id,
+                        'entity_id' => $entity_id,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
@@ -109,9 +111,10 @@ class UsuarioController extends Controller
         // echo 'usuarios.index:::::::::::::::'.$user;
         $user->first_name = $user->first_name;
         $user->last_name = $user->last_name;
+        $user->documento = $user->documento;
         $user->email = $user->email;
         $user->entity_id = $user->entity_id;
-        $user->rol = 'COMUN';
+        $user->rol = 'AGENTE';
         $user->telefono = $user->telefono;
 
         if (!$user->save()) {
@@ -159,6 +162,7 @@ class UsuarioController extends Controller
 
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
+        $user->documento = $request->documento;
         $user->email = $request->email;
         $user->rol = $request->rol;
         $user->password = Hash::make($request->password);
@@ -177,8 +181,8 @@ class UsuarioController extends Controller
             foreach ($entities as $entity_id) {
                 if (!empty($entity_id)) {
                     $entityData[] = [
-                        'id_user'   => $user->id,
-                        'id_entity' => $entity_id,
+                        'user_id'   => $user->id,
+                        'entity_id' => $entity_id,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];

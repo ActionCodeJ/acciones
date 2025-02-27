@@ -77,9 +77,17 @@
                 </div>
 
                 <div class="form-group col-lg-8 col-8">
+                    <label for="Documento">Documento</label>
+                    <input type="text" name="documento" class="form-control" id="documento" placeholder="documento"
+                        value="{{ old('documento') }}"
+                        oninput="this.value = this.value.replace(/\D/g, '')">
+                </div>
+
+                <div class="form-group col-lg-8 col-8">
                     <label for="Telefono">Telefono</label>
                     <input type="text" name="telefono" class="form-control" id="telefono" placeholder="telefono"
-                        value="{{ old('telefono') }}">
+                        value="{{ old('telefono') }}"
+                        oninput="this.value = this.value.replace(/[^0-9\-\(\) ]/g, '')">
                 </div>
 
 
@@ -137,8 +145,8 @@
                             <label for="rol">Rol</label>
                             <select name="rol" class="form-select col-lg-4 col-8  @error('rol') is-invalid @enderror"
                                 id="estado">
-                                <option style="background-color: rgb(157, 240, 208);" value="COMUN"
-                                    {{ old('rol') === 'COMUN' ? 'selected' : '' }}>AGENTE</option>
+                                <option style="background-color: rgb(157, 240, 208);" value="AGENTE"
+                                    {{ old('rol') === 'AGENTE' ? 'selected' : '' }}>AGENTE</option>
                                 <option style="background-color: rgb(245, 114, 105);" value="ADMINISTRADOR"
                                     {{ old('rol') === 'ADMINISTRADOR' ? 'selected' : '' }}>ADMINISTRADOR</option>
 

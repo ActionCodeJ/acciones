@@ -36,7 +36,7 @@
 
                 width: 'resolve' // need to override the changed default
             });
-           
+
         });
     </script>
 
@@ -74,10 +74,24 @@
                 </div>
 
                 <div class="form-group col-lg-8 col-8">
-                    <label for="telfono">Telefono</label>
-                    <input type="text" name="telefono" class="form-control" id="telefono" placeholder="Telefono"
-                        value="{{ old('telefono', $user->telefono) }}">
+                    <label for="documento">Documento</label>
+
+                    <input type="text" name="documento" class="form-control" id="documento" placeholder="Documento"
+                        value="{{ old('documento', $user->documento) }}"
+                        oninput="this.value = this.value.replace(/\D/g, '')">
+
                 </div>
+
+                <div class="form-group col-lg-8 col-8">
+                    <label for="telfono">Telefono</label>
+
+                    <input type="text" name="telefono" class="form-control" id="telefono" placeholder="Telefono"
+                        value="{{ old('telefono', $user->telefono) }}"
+                        oninput="this.value = this.value.replace(/[^0-9\-\(\) ]/g, '')">
+
+                </div>
+
+
 
                 <div class="form-group col-lg-8 col-8">
                     <label for="email">Email</label>
@@ -105,19 +119,19 @@
                 <div class="form-group col-lg-8 col-8">
                     <label for="entities">Entidades Habilitadas</label>
                     @php
-                    $selected = [];
-                    foreach ($user->entities as $entity) {
-                        $selected[]=$entity->id_entity
-                    }
+                        $selected = [];
+                        foreach ($user->entities as $entity) {
+                            $selected[] = $entity->id;
+                        }
 
                     @endphp
                     <select name="entities[]" class="form-control js-example-responsive" multiple="multiple"
                         style="width: 95%">
-                        
+
                         @foreach ($entities as $entity)
-                            <option value="{{ $entity->id }}" 
-                                {{ in_array($entity->id,$selectd) ?'selectd ': '' }} > 
-                                {{ $entity->nombre }}</option>
+                            <option value="{{ $entity->id }}" {{ in_array($entity->id, $selected) ? 'selected' : '' }}>
+                                {{ $entity->nombre }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -146,8 +160,8 @@
                                 <option style="background-color: rgb(238, 243, 221);" value="PENDIENTE"
                                     {{ old('rol', $user->rol) === 'PENDIENTE' ? 'selected' : '' }}>PENDIENTE</option>
 
-                                <option style="background-color: rgb(157, 240, 208);" value="COMUN"
-                                    {{ old('rol', $user->rol) === 'COMUN' ? 'selected' : '' }}>COMUN</option>
+                                <option style="background-color: rgb(157, 240, 208);" value="AGENTE"
+                                    {{ old('rol', $user->rol) === 'AGENTE' ? 'selected' : '' }}>AGENTE</option>
                                 <option style="background-color: rgb(245, 114, 105);" value="ADMINISTRADOR"
                                     {{ old('rol') === 'ADMINISTRADOR' ? 'selected' : '' }}>ADMINISTRADOR</option>
 

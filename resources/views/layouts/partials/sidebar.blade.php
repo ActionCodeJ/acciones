@@ -106,6 +106,7 @@
                     <a href="{{ route('actionTypes.index') }}" class="nav-link {{ activeSegment('actionType') }}">
                         <i class="nav-icon fas fa-th-list"></i>
                         <p>Tipos de actividad</p>
+                    </a>
                 </li>
                 @php
                     $fecha = date('Y-m-d');

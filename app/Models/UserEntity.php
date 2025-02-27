@@ -11,8 +11,8 @@ class UserEntity extends Model
     protected $table = 'user_entities';
 
     protected $fillable = [
-        'id_entity',
-        'id_user',
+        'entity_id',
+        'user_id',
         'observacion'
         
     ];
