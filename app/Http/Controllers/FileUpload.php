@@ -47,11 +47,7 @@ public function converToZip($imgarr)
     {
 
         
-        if(isset($request->numero) && is_array($request->numero))
-        {
-            return redirect()->back()->with('error', 'Para la descarga debe seleccionar al menos una imagen.');
-        }
-
+       
 
         $imagenes=$request->numero;
 
