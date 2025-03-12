@@ -214,7 +214,9 @@
                 <div class="form-group">
                     <label for="monto_estimado">Monto Estimado</label>
                     <input type="text" name="monto_estimado" class="form-control @error('monto_estimado') is-invalid @enderror"
-                        id="monto_estimado" placeholder="monto_estimado" value="{{ old('monto_estimado') }}">
+                        id="monto_estimado" placeholder="Monto_estimado" value="{{ old('monto_estimado') }}"
+                        oninput="this.value = this.value.replace(/,/g, '.').replace(/[^0-9.]/g, '')">
+                        
                     @error('monto_estimado')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
