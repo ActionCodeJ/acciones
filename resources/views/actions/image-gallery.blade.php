@@ -115,7 +115,7 @@
                 </div> <!-- col-6 / end -->
 
                 @endforeach
-                <button class="btn btn-success btn-block btn-lg" type="submit" onclick="if(!this.form.numero.checked){alert('Para poder descargar por favor seleccione al menos una imagen.');return false}">Descargar Imagenes Seleccionadas</button>
+                <button class="btn btn-success btn-block btn-lg" type="submit" >Descargar Imagenes Seleccionadas</button>
 
             </form>
 
